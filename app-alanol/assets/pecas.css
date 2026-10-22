@@ -1,0 +1,166 @@
+/* Peças das bombas de poço (admin/pecas.php). Tudo dentro de #pecas, para não mexer no resto da app. */
+#pecas {--bg: #f0f8ff; --surface: #ffffff; --surface-2: #f4f8fd; --ink: #1a2a3a; --muted: #5b6e82;
+  --line: #d6e2f0; --accent: #1565b3; --accent-soft: #dde9fa; --accent-ink: #ffffff;
+  --faixa: #1565c0; --faixa-ink: #ffffff; --faixa-2: rgba(255,255,255,.16);
+  --warn: #9a5200; --warn-soft: #fbefdf; --danger: #b3261e; --ok: #2f7a3a;
+  --f-display: inherit;
+  --f-body: inherit;
+  --f-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r: 10px;
+  color-scheme: light;}
+#pecas [hidden] {display: none !important;}
+#pecas button, #pecas input, #pecas textarea, #pecas select {font: inherit; color: inherit;}
+#pecas button {cursor: pointer;}
+#pecas :focus-visible {outline: 2px solid var(--accent); outline-offset: 2px;}
+#pecas .mono {font-family: var(--f-mono); font-variant-numeric: tabular-nums;}
+#pecas .separadores {display: flex; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px;}
+#pecas .separadores button {border: 0; background: transparent; padding: 6px 16px; border-radius: 999px; font-weight: 600; color: var(--muted);}
+#pecas .separadores button[aria-selected="true"] {background: var(--accent); color: var(--accent-ink);}
+#pecas .estado-db {font-size: 12px; color: var(--muted);}
+#pecas .btn {border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 7px 12px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;}
+#pecas .btn:hover {border-color: var(--accent);}
+#pecas .btn--pri {background: var(--accent); color: var(--accent-ink); border-color: var(--accent);}
+#pecas .btn--pri:disabled {opacity: .45; cursor: default;}
+#pecas .btn--perigo {color: var(--danger);}
+#pecas .corpo {max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: minmax(300px, 420px) minmax(0, 1fr); gap: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px;}
+#pecas .lista-col {min-width: 0; display: flex; flex-direction: column; gap: 10px;}
+#pecas .ficha-col {min-width: 0;}
+#pecas .filtros {display: flex; flex-direction: column; gap: 8px;}
+#pecas .procura {width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);}
+#pecas .filtros__linha {display: flex; gap: 6px; flex-wrap: wrap; align-items: center;}
+#pecas .filtros select {padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); max-width: 100%;}
+#pecas .chip {border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 13px; font-weight: 500;}
+#pecas .chip[aria-pressed="true"] {background: var(--accent-soft); border-color: var(--accent); color: var(--accent);}
+#pecas .contagem {font-size: 12px; color: var(--muted);}
+#pecas .lista {list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;}
+#pecas .lista li + li {border-top: 1px solid var(--line);}
+#pecas .item {width: 100%; text-align: left; border: 0; background: transparent; padding: 9px 12px; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; align-items: center;}
+#pecas .item:hover {background: var(--surface-2);}
+#pecas .item[aria-current="true"] {background: var(--accent-soft);}
+#pecas .item__mini {width: 44px; height: 44px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); object-fit: cover; display: grid; place-items: center; font-size: 10px; color: var(--muted); overflow: hidden;}
+#pecas .item__mini img {width: 100%; height: 100%; object-fit: cover;}
+#pecas .item__txt {min-width: 0;}
+#pecas .item__cod {font-family: var(--f-mono); font-size: 12px; color: var(--muted);}
+#pecas .item__tit {font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+#pecas .item__sub {font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+#pecas .linha {display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding-right: 10px;}
+#pecas .linha[aria-current="true"] {background: var(--accent-soft);}
+#pecas .linha .item {grid-template-columns: minmax(0, 1fr);}
+#pecas .zona {width: 58px; height: 58px; border: 1.5px dashed var(--line); border-radius: 7px; position: relative; overflow: hidden; cursor: pointer;
+  display: grid; place-items: center; background: var(--surface-2); color: var(--muted);}
+#pecas .zona:hover {border-color: var(--accent); color: var(--accent);}
+#pecas .zona--tem {border-style: solid; background: #fff;}
+#pecas .zona img {position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;}
+#pecas .zona__mais {font-size: 20px; line-height: 1; margin-top: -12px;}
+#pecas .zona__pdf {font-family: var(--f-mono); font-weight: 600; font-size: 12px; color: var(--accent); margin-top: -12px;}
+#pecas .zona__txt {font-size: 10px; text-align: center; padding: 0 3px; margin-top: -10px;}
+#pecas .zona__rot {position: absolute; left: 0; right: 0; bottom: 0; font-size: 10px; font-weight: 600; text-align: center; line-height: 15px;
+  background: var(--surface-2); color: var(--muted); border-top: 1px solid var(--line);}
+#pecas .zona--tem .zona__rot {background: rgba(10,15,20,.66); color: #fff; border-top: 0;}
+#pecas .zona--sobre {border-color: var(--accent); border-style: solid; background: var(--accent-soft); color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);}
+#pecas .zona--nao {border-color: var(--danger);}
+#pecas .toast {position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; max-width: min(520px, calc(100vw - 32px)); box-shadow: 0 6px 24px rgba(0,0,0,.25);}
+#pecas .familia {font-family: var(--f-display); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 4px; background: var(--surface-2);}
+#pecas .vazio {background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 28px 20px; color: var(--muted); text-align: center;}
+#pecas .vazio strong {display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px;}
+#pecas .ficha {background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 22px;}
+#pecas .ficha__cab {display: flex; flex-direction: column; gap: 6px;}
+#pecas .voltar {display: none; align-self: flex-start;}
+#pecas .ficha__cod {font-family: var(--f-mono); font-size: 13px; color: var(--muted);}
+#pecas .ficha__tit {font-family: var(--f-display); font-weight: 700; font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.15; margin: 0; text-wrap: balance; overflow-wrap: anywhere;}
+#pecas .ficha__orig {font-size: 13px; color: var(--muted);}
+#pecas .ficha__orig b {font-weight: 600; color: var(--ink);}
+#pecas .bloco {display: flex; flex-direction: column; gap: 10px;}
+#pecas .bloco__tit {display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap;}
+#pecas .bloco__tit h3 {font-family: var(--f-display); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0;}
+#pecas .campos {display: grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+#pecas .campo {display: flex; flex-direction: column; gap: 4px; min-width: 0;}
+#pecas .campo--largo {grid-column: 1 / -1;}
+#pecas .campo label {font-size: 12.5px; font-weight: 600; color: var(--muted);}
+#pecas .campo input, #pecas .campo textarea {padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface-2); width: 100%;}
+#pecas .campo textarea {min-height: 110px; resize: vertical;}
+#pecas .campo input:read-only, #pecas .campo textarea:read-only {background: transparent;}
+#pecas .guardar {display: flex; align-items: center; gap: 12px; flex-wrap: wrap;}
+#pecas .aviso {font-size: 13px; color: var(--muted);}
+#pecas .aviso--ok {color: var(--ok);}
+#pecas .aviso--erro {color: var(--danger);}
+#pecas .galeria {display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;}
+#pecas .media {position: relative; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--surface-2); aspect-ratio: 1; max-width: 100%;}
+#pecas .media > button.abrir {all: unset; cursor: zoom-in; display: block; width: 100%; height: 100%;}
+#pecas .media img {width: 100%; height: 100%; object-fit: contain; background: #fff;}
+#pecas .media--pdf {display: grid; place-items: center; text-align: center; padding: 8px;}
+#pecas .media--pdf a {color: var(--accent); font-weight: 600; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; overflow-wrap: anywhere;}
+#pecas .media--pdf .pdf-tag {font-family: var(--f-mono); font-weight: 600; font-size: 18px; border: 2px solid currentColor; border-radius: 4px; padding: 6px 8px;}
+#pecas .media__tirar {position: absolute; top: 6px; right: 6px; border: 0; border-radius: 6px; background: rgba(10,15,20,.72); color: #fff; font-size: 12px; padding: 3px 7px;}
+#pecas .media__conf {position: absolute; inset: auto 0 0 0; background: var(--surface); border-top: 1px solid var(--line); padding: 6px; display: flex; gap: 6px; justify-content: center; align-items: center; font-size: 12.5px;}
+#pecas .media__conf button {border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 2px 8px; font-size: 12.5px;}
+#pecas .media__conf .sim {color: var(--danger); border-color: var(--danger);}
+#pecas .add {border: 1.5px dashed var(--line); border-radius: var(--r); aspect-ratio: 1; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--accent); font-weight: 600; font-size: 13px; max-width: 100%;}
+#pecas .add:hover {border-color: var(--accent); background: var(--accent-soft);}
+#pecas .add span {font-size: 26px; line-height: 1;}
+#pecas .a-enviar {aspect-ratio: 1; border: 1px solid var(--line); border-radius: var(--r); display: grid; place-items: center; font-size: 12.5px; color: var(--muted); background: var(--surface-2); text-align: center; padding: 6px;}
+#pecas .tabela-wrap {overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r);}
+#pecas table {border-collapse: collapse; width: 100%; font-size: 14px;}
+#pecas th, #pecas td {text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top;}
+#pecas tr:last-child td {border-bottom: 0;}
+#pecas th {font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface-2); white-space: nowrap;}
+#pecas td.num {font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap;}
+#pecas tr.clicavel {cursor: pointer;}
+#pecas tr.clicavel:hover td {background: var(--accent-soft);}
+#pecas .esp {display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;}
+#pecas .esp div {padding: 8px 12px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); margin: 0 -1px -1px 0;}
+#pecas .esp dt {font-size: 12px; color: var(--muted);}
+#pecas .esp dd {margin: 0; font-weight: 600; font-variant-numeric: tabular-nums;}
+#pecas .usada {display: flex; flex-wrap: wrap; gap: 6px;}
+#pecas .usada button {border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; padding: 3px 9px; font-size: 13px;}
+#pecas .usada button:hover {border-color: var(--accent); color: var(--accent);}
+#pecas .usada .sq {font-family: var(--f-mono); color: var(--muted); font-size: 12px;}
+#pecas .visor {position: fixed; inset: 0; z-index: 20; background: rgba(6,10,14,.92); display: grid; grid-template-rows: auto 1fr auto; color: #fff;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) max(12px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 10px) max(12px, env(safe-area-inset-left, 0px));}
+#pecas .visor__cab {display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px;}
+#pecas .visor__img {min-height: 0; display: grid; place-items: center;}
+#pecas .visor__img img {max-width: 100%; max-height: 100%; object-fit: contain; background: #fff;}
+#pecas .visor__nav {display: flex; justify-content: center; gap: 12px;}
+#pecas .visor button {border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; border-radius: 8px; padding: 6px 14px; font-size: 15px;}
+@media (max-width: 820px) {
+  #pecas .corpo {grid-template-columns: minmax(0, 1fr);}
+  #pecas .voltar {display: inline-flex;}
+  #pecas .campos {grid-template-columns: 1fr;}
+  #pecas .ficha {padding: 16px;}
+}
+@media (prefers-reduced-motion: no-preference) {
+  #pecas .item, #pecas .btn, #pecas .chip {transition: background-color .12s, border-color .12s;}
+}
+#pecas .janela {border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink); padding: 20px; width: min(520px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto;}
+#pecas .janela::backdrop {background: rgba(6,10,14,.6);}
+#pecas .janela h2 {font-family: var(--f-display); font-weight: 700; font-size: 22px; margin: 0 0 12px;}
+#pecas .janela form {display: flex; flex-direction: column; gap: 12px;}
+#pecas .janela .botoes {display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;}
+#pecas .janela .campo input[type="checkbox"] {width: auto;}
+#pecas .contas {list-style: none; margin: 0 0 16px; padding: 0; border: 1px solid var(--line); border-radius: var(--r);}
+#pecas .contas li {display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px;}
+#pecas .contas li + li {border-top: 1px solid var(--line);}
+#pecas { color: var(--ink); font-family: var(--f-body); font-size: .95rem; line-height: 1.5; }
+#pecas *, #pecas *::before, #pecas *::after { box-sizing: border-box; }
+#pecas h1, #pecas h2, #pecas h3 { margin: 0; }
+#pecas .corpo { max-width: 1400px; padding: 0 0 70px; }
+
+/* Barra de cima das Peças: título, separadores e ações */
+#pecas .pc-barra { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto 14px; }
+#pecas .pc-barra h1 { font-size: 1.2rem; }
+#pecas .pc-barra .estado-db { font-size: 12px; color: var(--muted); }
+#pecas .pc-barra__fim { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+#pecas .separadores { background: #fff; }
+#pecas .lista, #pecas .ficha, #pecas .vazio { border-color: transparent; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+#pecas .btn { line-height: 1.2; }
+@media (max-width: 820px) {
+  #pecas .corpo { padding-bottom: 80px; }
+}
+/* Janela (importar) */
+.pc-janela { border: 0; border-radius: 12px; padding: 20px; width: min(520px, calc(100vw - 32px)); box-shadow: 0 10px 40px rgba(0,0,0,.2); }
+.pc-janela::backdrop { background: rgba(6,10,14,.55); }
+.pc-janela h2 { font-size: 1.15rem; margin: 0 0 12px; }
+.pc-janela form { display: flex; flex-direction: column; gap: 12px; }
+.pc-janela .botoes { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
