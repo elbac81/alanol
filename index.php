@@ -58,11 +58,11 @@ $v = PA_VERSAO;
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#0d5a8a">
+<meta name="theme-color" content="#1565c0">
 <title>Peças Alanol</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,800&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="app.css?v=<?= e($v) ?>">
 </head>
 <body>
@@ -89,7 +89,8 @@ $v = PA_VERSAO;
 <?php else: ?>
 <header class="topo">
   <div class="topo__linha">
-    <div class="marca">Peças Alanol<small>Bombas de poço</small></div>
+    <div class="marca"><span class="marca__logo">ALANOL<sub>ELECTROBOMBAS SUBMERSÍVEIS S.A.</sub></span><span class="marca__sep"></span>Peças</div>
+    <a class="painel" href="<?= e(PA_PAINEL) ?>">‹ Painel</a>
     <div class="separadores" role="tablist">
       <button role="tab" id="tab-pecas" aria-selected="true">Peças</button>
       <button role="tab" id="tab-modelos" aria-selected="false">Modelos</button>

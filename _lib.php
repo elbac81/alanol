@@ -2,7 +2,8 @@
 // Peças Alanol — tudo o que é comum: dados em JSON, contas, sessão, ficheiros.
 declare(strict_types=1);
 
-const PA_VERSAO = '1';                 // subir ao mudar app.css / app.js
+const PA_VERSAO = '2';                 // subir ao mudar app.css / app.js
+const PA_PAINEL = '/privado/';         // endereço do painel da Alanol (botão «‹ Painel»)
 const PA_DADOS = __DIR__ . '/dados';   // fora do Git; criada sozinha
 const PA_FICHEIROS = PA_DADOS . '/ficheiros';   // nomes aleatórios; servidos só por ficheiro.php
 const PA_MAX_FICHEIRO = 20 * 1024 * 1024;

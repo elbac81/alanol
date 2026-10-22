@@ -208,7 +208,7 @@
     } else {
       cab.append(E('div', { class: 'ficha__cod', text: 'Código ' + d.codigo + '  ·  Família ' + d.familia }),
         E('h2', { class: 'ficha__tit', text: (d.titulo && d.titulo.trim()) || d.nome }),
-        d.titulo ? E('div', { class: 'ficha__orig' }, 'Modelo: ', E('b', { text: d.nome })) : null);
+        ...(d.titulo ? [E('div', { class: 'ficha__orig' }, 'Modelo: ', E('b', { text: d.nome }))] : []));
     }
 
     const inp = (id, campo, rot, tipo) => {
