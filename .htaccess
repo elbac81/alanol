@@ -1,0 +1,11 @@
+# Peças Alanol — Apache
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "^(_lib\.php|.*\.py|.*\.md)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 ^/?(.*/)?(dados|ferramentas)(/|$)
+<IfModule mod_php.c>
+  php_value upload_max_filesize 20M
+  php_value post_max_size 22M
+</IfModule>

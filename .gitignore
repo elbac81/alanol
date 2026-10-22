@@ -1,0 +1,4 @@
+# Dados reais: só no servidor
+dados/
+*.json.tmp
+alanol-listagem.json
