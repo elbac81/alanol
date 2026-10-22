@@ -1,0 +1,73 @@
+name: Publicar em alanol.pt/pecas
+
+# Envia a app por FTP para o alojamento da alanol.pt, na pasta pecas/ (alanol.pt/pecas/).
+# Precisa de três segredos no repositório (Settings › Secrets and variables › Actions):
+#   ALANOL_FTP_HOST      ex.: ftp.alanol.pt
+#   ALANOL_FTP_USER
+#   ALANOL_FTP_PASSWORD
+# Opcional: ALANOL_FTP_PASTA = caminho da pasta no FTP (por omissão: public_html/pecas se existir
+# public_html na raiz do FTP, senão pecas).
+# A pasta dados/ nunca vai daqui: é criada e escrita pela app, no servidor.
+
+on:
+  push:
+    branches: [main, claude/loving-bardeen-v0uwxo]
+  workflow_dispatch:
+    inputs:
+      permitir_ftp_simples:
+        description: 'Enviar sem cifra se o alojamento recusar FTPS (a password vai em claro)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: publicar-alanol
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enviar por FTP
+        env:
+          FTP_HOST: ${{ secrets.ALANOL_FTP_HOST }}
+          FTP_USER: ${{ secrets.ALANOL_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.ALANOL_FTP_PASSWORD }}
+          FTP_PASTA: ${{ secrets.ALANOL_FTP_PASTA }}
+          PERMITIR_SIMPLES: ${{ github.event.inputs.permitir_ftp_simples }}
+        run: |
+          set -e
+          if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "ERRO: faltam os segredos ALANOL_FTP_HOST, ALANOL_FTP_USER e ALANOL_FTP_PASSWORD."
+            echo "Juntar em Settings › Secrets and variables › Actions e voltar a correr (Run workflow)."
+            exit 1
+          fi
+
+          # Cifra: primeiro FTPS com certificado validado, depois FTPS sem validar
+          # (alojamento partilhado com certificado do servidor), e só com pedido
+          # explícito FTP simples.
+          sonda() { curl --silent --max-time 30 --list-only "$@" "ftp://${FTP_HOST}/" --user "${FTP_USER}:${FTP_PASSWORD}"; }
+          if RAIZ=$(sonda --ssl-reqd); then CIFRA="--ssl-reqd"; echo "Ligação cifrada (FTPS)."
+          elif RAIZ=$(sonda --ssl-reqd --insecure); then CIFRA="--ssl-reqd --insecure"; echo "Ligação cifrada (FTPS), certificado do alojamento não validado."
+          elif [ "${PERMITIR_SIMPLES}" = "true" ] && RAIZ=$(sonda); then CIFRA=""; echo "AVISO: FTP simples, a pedido. Mudar a password do FTP a seguir."
+          else
+            echo "ERRO: não foi possível entrar no FTP com cifra (ou o utilizador/password estão errados)."
+            echo "Se o alojamento não tiver FTPS, lançar à mão (Run workflow) com 'permitir_ftp_simples'."
+            exit 1
+          fi
+
+          if [ -z "$FTP_PASTA" ]; then
+            if printf '%s\n' "$RAIZ" | grep -qx 'public_html'; then FTP_PASTA="public_html/pecas"; else FTP_PASTA="pecas"; fi
+          fi
+          FTP_PASTA="${FTP_PASTA#/}"; FTP_PASTA="${FTP_PASTA%/}"
+          echo "Pasta no FTP: ${FTP_PASTA}/"
+
+          # Só os ficheiros da app (nada de dados/, ferramentas, documentação ou .github)
+          git ls-files | grep -Ev '^(dados/|ferramentas/|\.github/|README\.md$|\.gitignore$)' > /tmp/enviar.txt
+          while IFS= read -r f; do
+            echo "A enviar: $f"
+            curl --silent --show-error $CIFRA --ftp-create-dirs -T "$f" "ftp://${FTP_HOST}/${FTP_PASTA}/${f}" --user "${FTP_USER}:${FTP_PASSWORD}"
+          done < /tmp/enviar.txt
+          echo "Feito: a app está em alanol.pt/pecas/ (se a pasta for a do site principal)."

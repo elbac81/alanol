@@ -18,9 +18,16 @@ no servidor e nunca vai para o Git.
 | `app.js`, `app.css` | Interface (subir `PA_VERSAO` em `_lib.php` ao mudá-los) |
 | `ferramentas/excel_para_json.py` | Converte a listagem em Excel no ficheiro a importar |
 
+## Publicar
+
+Cada push envia a app por FTP para **alanol.pt/pecas/** (`.github/workflows/ftp-deploy.yml`).
+Precisa dos segredos `ALANOL_FTP_HOST`, `ALANOL_FTP_USER` e `ALANOL_FTP_PASSWORD` no repositório
+(Settings › Secrets and variables › Actions); `ALANOL_FTP_PASTA` é opcional. Para enviar sem
+push: Actions › «Publicar em alanol.pt/pecas» › Run workflow.
+
 ## Pôr a funcionar
 
-1. Copiar os ficheiros para o alojamento (PHP 8.1+, com `fileinfo`). A pasta `dados/` cria-se
+1. Publicar (acima), ou copiar os ficheiros à mão para o alojamento (PHP 8.1+, com `fileinfo`). A pasta `dados/` cria-se
    sozinha com um `.htaccess` que a fecha; em nginx, bloquear `/dados/` à mão.
 2. Abrir o endereço: a 1.ª pessoa cria a conta de administrador (password ≥ 10).
 3. Menu ☰ › **Importar listagem…** e escolher `alanol-listagem.json`.
